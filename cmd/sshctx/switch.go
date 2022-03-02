@@ -16,11 +16,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
-	"github.com/spencercjh/sshctx/internal/env"
-	"github.com/spencercjh/sshctx/internal/printer"
-	"github.com/spencercjh/sshctx/internal/sshconfig"
-	"gopkg.in/yaml.v3"
 	"io"
 	"io/ioutil"
 	"os"
@@ -28,6 +23,12 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	"github.com/pkg/errors"
+	"github.com/spencercjh/sshctx/internal/env"
+	"github.com/spencercjh/sshctx/internal/printer"
+	"github.com/spencercjh/sshctx/internal/sshconfig"
+	"gopkg.in/yaml.v3"
 )
 
 // SwitchOp indicates intention to switch contexts.
@@ -105,6 +106,8 @@ func extract(target string) (string, string, error) {
 
 // connectTarget
 func connectTarget(target string, stderr io.Writer) (string, string, error) {
+	// remove color
+	target = env.ANSI.ReplaceAllString(target, "")
 	// sshctx DisplayName
 	if !strings.HasPrefix(target, "💻") {
 		return connectTargetWithDisplayNameOnly(target, stderr)

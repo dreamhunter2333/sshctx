@@ -15,16 +15,17 @@
 package main
 
 import (
+	"io"
+	"os"
+	"sort"
+	"strings"
+
 	"facette.io/natsort"
 	"github.com/manifoldco/promptui"
 	"github.com/pkg/errors"
 	"github.com/spencercjh/sshctx/internal/env"
 	"github.com/spencercjh/sshctx/internal/printer"
 	"github.com/spencercjh/sshctx/internal/sshconfig"
-	"io"
-	"os"
-	"sort"
-	"strings"
 )
 
 type PromptuiOp struct{}
@@ -64,6 +65,10 @@ func (op PromptuiOp) Run(stdout, stderr io.Writer) error {
 		Items: items,
 	}
 	_, result, err := prompt.Run()
+
+	if err == promptui.ErrInterrupt {
+		return nil
+	}
 
 	if err != nil {
 		return errors.Wrap(err, "promptui error")
