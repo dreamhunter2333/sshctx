@@ -151,7 +151,7 @@ func connectTargetWithDisplayNameAndSSHParameter(displayName string, sshPara str
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(1)
 	go func() {
-		cmd := exec.Command("ssh", "-t", "-t", sshPara)
+		cmd := exec.Command("ssh", "-t", "-t", displayName)
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = stderr
